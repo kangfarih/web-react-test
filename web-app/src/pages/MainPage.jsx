@@ -14,9 +14,10 @@ class MainPage extends React.Component {
     this.state = {
       DataProduct: [],
       _page: 1,
-      _limit: 10,
+      _limit: 12,
       _sort: "",
       _isLoading: false,
+      _endCatalogue: false,
     };
 
     this.clickUpdate = this.clickUpdate.bind(this);
@@ -28,8 +29,7 @@ class MainPage extends React.Component {
     this.scroll();
   }
 
-  componentWillUnmount() {
-  }
+  componentWillUnmount() {}
 
   // ANCHOR STATE UTILITY
   /**
@@ -71,6 +71,10 @@ class MainPage extends React.Component {
       .then((res) => res.json())
       .then(
         (result) => {
+          if (result.length < 1) {
+            this.setState({ _endCatalogue: true, _isLoading: false });
+            return;
+          }
           switch (type) {
             case _TYPE.PUSH:
               this.PushDataProduct(result);
@@ -92,7 +96,9 @@ class MainPage extends React.Component {
    * Load Next Data
    */
   GetNextProducts = function () {
-    if(this.state._isLoading){return;}
+    if (this.state._isLoading || this.state._endCatalogue) {
+      return;
+    }
     this.setState(
       (state) => {
         return { _page: state._page + 1 };
@@ -154,12 +160,13 @@ class MainPage extends React.Component {
   render() {
     return (
       <div className="Main">
-        <section className="sort">
+        <section className="filter">
           <SortOption onChangeFunc={this.onchangeSort} />
         </section>
         <Products
           data={this.state.DataProduct}
           isLoading={this.state._isLoading}
+          isEndCatalogue={this.state._endCatalogue}
         />
         {/* <button onClick={this.clickUpdate}>Update</button> */}
       </div>

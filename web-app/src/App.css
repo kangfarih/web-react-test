@@ -38,7 +38,7 @@ article, div {
 
 .nav-bar {
   display: inline-block;
-  height: 5em;
+  height: 5rem;
   float: right;
   background-color: white;
 }
@@ -49,6 +49,26 @@ article, div {
   padding-top: 5rem;
 }
 
+.products {}
+
+.card {
+  width: 80vw;
+  height: 20rem;
+  display: inline-block;
+  background-color: thistle;
+  border-radius: 1rem;
+  padding: 0.2rem;
+  margin: 0 0.2rem;
+  cursor: default;
+}
+
+@media (min-width:calc(32em/1.6)) {
+  /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
+  .card {
+    width: 40vw;
+  }
+}
+
 @media (min-width:calc(60em/1.6)) {
   /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
   .App {
@@ -57,10 +77,13 @@ article, div {
   .logo {
     display: inline-block;
     float: left;
-    height: 3em;
-    width: 6em;
+    height: 3rem;
+    width: 6rem;
     text-align: center;
     color: green;
+  }
+  .card {
+    width: 25vw;
   }
 }
 
@@ -68,5 +91,8 @@ article, div {
   /* big landscape tablets, laptops, and desktops */
   .App {
     color: rgb(0, 183, 255);
+  }
+  .card {
+    width: 20vw;
   }
 }

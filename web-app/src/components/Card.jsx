@@ -3,11 +3,12 @@ export default function Card(param) {
   // for (var k in param.data) keys.push(k);
   let dat = param.data;
   return (
-    <article>
-      <div style={{ fontSize: dat.size + "px" }}>{dat.face}</div>
+    <article className="card">
+      {/* <div style={{ fontSize: dat.size + "px" }}>{dat.face}</div> */}
+      <div style={{ fontSize: 2 + "rem" }}>{dat.face}</div>
       <div>price: ${dat.price / 100}</div>
       <div>size: {dat.size}</div>
-      <div>id: {dat.id}</div>
+      {/* <div>id: {dat.id}</div> */}
       <div>{FormatDate(dat.date)}</div>
     </article>
   );
