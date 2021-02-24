@@ -1,3 +1,11 @@
+How To Run
+====
+1. Install Server dependencies : `npm Install`
+2. Install Client dependencies : `npm run client:install`
+3. Run Dev : `npm run dev`
+
+---
+<br><br>
 Products Grid
 ====
 

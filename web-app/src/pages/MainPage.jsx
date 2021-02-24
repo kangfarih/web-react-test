@@ -25,6 +25,10 @@ class MainPage extends React.Component {
 
   componentDidMount() {
     this.GetProducts(_TYPE.GET);
+    this.scroll();
+  }
+
+  componentWillUnmount() {
   }
 
   // ANCHOR STATE UTILITY
@@ -88,6 +92,7 @@ class MainPage extends React.Component {
    * Load Next Data
    */
   GetNextProducts = function () {
+    if(this.state._isLoading){return;}
     this.setState(
       (state) => {
         return { _page: state._page + 1 };
@@ -126,6 +131,25 @@ class MainPage extends React.Component {
     );
   };
 
+  scroll() {
+    window.onscroll = () => {
+      // console.log('scrolling')
+      let bottomOfWindow =
+        document.documentElement.scrollTop +
+          window.innerHeight -
+          document.documentElement.offsetHeight >
+          -1 &&
+        document.documentElement.scrollTop +
+          window.innerHeight -
+          document.documentElement.offsetHeight <
+          1;
+
+      if (bottomOfWindow && !this.onloading) {
+        this.GetNextProducts();
+      }
+    };
+  }
+
   // ANCHOR RENDER
   render() {
     return (
@@ -137,7 +161,7 @@ class MainPage extends React.Component {
           data={this.state.DataProduct}
           isLoading={this.state._isLoading}
         />
-        <button onClick={this.clickUpdate}>Update</button>
+        {/* <button onClick={this.clickUpdate}>Update</button> */}
       </div>
     );
   }

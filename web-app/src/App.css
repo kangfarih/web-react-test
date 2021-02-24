@@ -6,12 +6,19 @@ article, div {
   overflow: hidden;
 }
 
+/* Default Media : smartphones, portrait iPhone, portrait 480x320 phones (Android) */
+
 .App {
   text-align: center;
   background-color: white;
   min-height: 100vh;
   font-size: 1.6rem;
-  color: white;
+  color: #282c34;
+}
+
+.App-header {
+  position: fixed;
+  width: 100%;
 }
 
 .header {
@@ -26,18 +33,20 @@ article, div {
 
 .search-bar {
   display: inline-block;
+  height: 100%;
 }
 
 .nav-bar {
   display: inline-block;
+  height: 5em;
   float: right;
+  background-color: white;
 }
 
-@media (min-width:calc(32em/1.6)) {
-  /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
-  .App {
-    color: #282c34;
-  }
+.nav-button {}
+
+.App-main {
+  padding-top: 5rem;
 }
 
 @media (min-width:calc(60em/1.6)) {
@@ -45,7 +54,6 @@ article, div {
   .App {
     color: rgb(57, 128, 24);
   }
-
   .logo {
     display: inline-block;
     float: left;
