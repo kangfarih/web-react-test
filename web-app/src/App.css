@@ -55,6 +55,8 @@ article, div {
   display: none;
 }
 
+/* ANCHOR SEARCH BAR */
+
 .search-bar {
   height: calc(100% - 2rem);
   width: calc(100% - 7rem);
@@ -84,7 +86,7 @@ article, div {
 
 .search-bar button {
   width: 4.2rem;
-  height: 3.5rem;
+  height: 3.45rem;
   margin: 0;
   padding: 0;
   border-radius: 0 1.5rem 1.5rem 0;
@@ -111,11 +113,16 @@ article, div {
   color: white;
 }
 
+/* ANCHOR APP MAIN */
+
 .App-main {
   padding-top: 5rem;
 }
 
-.products {}
+.products {
+  max-width: calc(100% - 2rem);
+  margin-left: 1rem;
+}
 
 /* ANCHOR CARD */
 
@@ -128,16 +135,18 @@ article, div {
   border-radius: 1rem;
   padding: 0.2rem;
   margin: 0.5rem 0.8rem;
-  cursor: default;
   cursor: pointer;
+  float: left;
+  width: calc(100% - 2rem);
+  font-size: 1rem;
 }
 
 .face-box {
-  height: 10rem;
+  height: 10em;
   width: 90%;
   display: table;
-  background-color: rgba(159, 249, 255, 0.171);
-  margin: 5% 5% 1rem 5%;
+  background-color: rgba(159, 249, 255, 0.5);
+  margin: 2rem auto;
   border-radius: 1rem;
   font-size: 1.2rem;
   position: relative;
@@ -166,29 +175,29 @@ article, div {
   text-align: left;
   padding: 0 5%;
   position: relative;
-  height: 7.5rem;
+  height: 7.5em;
 }
 
 .detail-box .id {
-  font-size: 1.2rem;
+  font-size: 1.2em;
 }
 
 .detail-box .size {
-  margin-top: 0.5rem;
-  font-size: 1.2rem;
+  margin-top: 0.5em;
+  font-size: 1.2em;
   font-weight: 700;
 }
 
 .detail-box .price {
-  font-size: 1.8rem;
+  font-size: 1.8em;
   font-weight: 600;
   color: rgb(12, 163, 173);
 }
 
 .detail-box .date {
   right: 5%;
-  top: .5rem;
-  font-size: 1rem;
+  top: .5em;
+  font-size: 1.2em;
   position: absolute;
   bottom: 0px;
 }
@@ -217,7 +226,7 @@ article, div {
 
 .modal-card .box {
   position: absolute;
-  height: 40rem;
+  height: 33rem;
   width: 80%;
   max-width: 50rem;
   background-color: white;
@@ -231,7 +240,7 @@ article, div {
   height: 20rem;
 }
 
-/* ANCHOR UTILITIES */
+/* ANCHOR UTILITIES SELECT*/
 
 .utilities {
   height: 5rem;
@@ -286,9 +295,31 @@ article, div {
   float: right;
 }
 
-.utilities .select {}
-
 .utilities .icon>* {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}
+
+/* ANCHOR LOADING */
+
+.loading {
+  position: relative;
+  min-height: 10rem;
+}
+
+.loading.show>* {
+  display: block;
+  font-size: 3rem;
+}
+
+.loading.show.full {
+  min-height: calc(100vh - 21rem);
+}
+
+.loading>* {
+  display: none;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -298,7 +329,7 @@ article, div {
 @media (min-width:calc(36em/1.6)) {
   /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
   .card {
-    width: calc(50% - 3rem);
+    width: calc(100% - 2rem);
   }
 }
 
@@ -306,9 +337,6 @@ article, div {
 
 @media (min-width:calc(60em/1.6)) {
   /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
-  .App {
-    color: rgb(57, 128, 24);
-  }
   .logo {
     display: inline-block;
     float: left;
@@ -332,7 +360,19 @@ article, div {
     padding: .75rem .5rem .5rem 1.5rem;
   }
   .card {
-    width: calc(33% - 4rem);
+    width: 80vw;
+    height: 24rem;
+    display: inline-block;
+    background-color: white;
+    box-shadow: rgb(49 53 59 / 12%) 0px 1px 6px 0px;
+    border-radius: 1rem;
+    padding: 0.2rem;
+    margin: 0.5rem 0.8rem;
+    width: calc(50% - 2rem);
+    font-size: 1.2rem;
+  }
+  .modal-card .box {
+    height: 37rem;
   }
 }
 
@@ -341,9 +381,12 @@ article, div {
 @media (min-width:calc(102.4em/1.6)) {
   /* big landscape tablets, laptops, and desktops */
   .App {
-    color: rgb(0, 183, 255);
+    margin: auto;
+  }
+  .App .App-header, .App .App-main, .App {
+    max-width: 128rem;
   }
   .card {
-    max-width: calc((100% / 4) - 8rem);
+    max-width: calc(25% - 2rem);
   }
 }

@@ -15,7 +15,7 @@ export default function Card(param) {
     <Fragment>
       <article id={dat.id} className="card" onClick={openmodal}>
         <div className="face-box">
-          <span className="face" id={`span-${dat.id}`}>{dat.face}</span>
+          <span className="face" id={`span-${dat.id}`} style={{ fontSize: dat.size + "px" }}>{dat.face}</span>
         </div>
         <div className="detail-box">
           {/* <div className="id">{dat.id}</div> */}

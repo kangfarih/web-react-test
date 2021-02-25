@@ -213,7 +213,7 @@ class MainPage extends React.Component {
             <span className="icon">
               <FontAwesomeIcon icon={faBook} />
             </span>
-            <select name="" id="">
+            <select name="" id="" disabled>
               <option value="Category">Category</option>
             </select>
           </section>
@@ -221,8 +221,8 @@ class MainPage extends React.Component {
             <span className="icon">
               <FontAwesomeIcon icon={faFilter} />
             </span>
-            <select name="" id="">
-              <option value="Category">Category</option>
+            <select name="" id="" disabled>
+              <option value="Filter">Filter</option>
             </select>
           </section>
           <SortOption onChangeFunc={this.onchangeSort} />
