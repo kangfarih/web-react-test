@@ -19,6 +19,11 @@ class Header extends React.Component {
           <span className="nav-button">
             <FontAwesomeIcon icon={faBars} />
           </span>
+          <ul className="menu">
+            <li>Login</li>
+            <li>Register</li>
+            <li>About</li>
+          </ul>
         </section>
       </div>
     );

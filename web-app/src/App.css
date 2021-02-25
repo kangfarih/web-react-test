@@ -101,16 +101,18 @@ article, div {
   border: 0.1rem solid rgb(85, 221, 214);
 }
 
+/* ANCHOR NAV BAR */
+
 .nav-bar {
   height: 5rem;
   width: 5rem;
   float: right;
+  color: white;
 }
 
 .nav-button {
   font-size: 3.3rem;
   cursor: pointer;
-  color: white;
 }
 
 /* ANCHOR APP MAIN */
@@ -146,7 +148,7 @@ article, div {
   width: 90%;
   display: table;
   background-color: rgba(159, 249, 255, 0.5);
-  margin: 2rem auto;
+  margin: 1rem auto;
   border-radius: 1rem;
   font-size: 1.2rem;
   position: relative;
@@ -361,7 +363,7 @@ article, div {
   }
   .card {
     width: 80vw;
-    height: 24rem;
+    height: 21rem;
     display: inline-block;
     background-color: white;
     box-shadow: rgb(49 53 59 / 12%) 0px 1px 6px 0px;
@@ -388,5 +390,33 @@ article, div {
   }
   .card {
     max-width: calc(25% - 2rem);
+  }
+  .search-bar {
+    width: calc(100% - 40rem);
+    float: left;
+  }
+  .nav-bar {
+    width: 30rem;
+    float: right;
+  }
+  .nav-bar .nav-button {
+    display: none;
+  }
+  .nav-bar ul.menu{
+    height: 100%;
+    margin: 0;
+    display: table;
+    float: right;
+    margin-right: 2rem;
+  }
+  .nav-bar ul.menu li{
+    cursor: pointer;
+    height: 100%;
+    padding: 0rem 0.5rem;
+    vertical-align: middle;
+    display: table-cell;
+  }
+  .nav-bar ul.menu li:hover{
+    background-color: rgb(21, 173, 166);
   }
 }
