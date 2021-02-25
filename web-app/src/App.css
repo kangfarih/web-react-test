@@ -40,21 +40,22 @@ article, div {
   z-index: 1;
 }
 
+/* ANCHOR HEADER */
+
 .header {
   background-color: rgb(26, 212, 203);
-  font-size: 10px;
   height: 5rem;
+}
+
+.header * {
+  display: inline-block;
 }
 
 .logo {
   display: none;
 }
 
-/* ANCHOR SEARCH BAR */
-
 .search-bar {
-  display: block;
-  float: left;
   height: calc(100% - 2rem);
   width: calc(100% - 7rem);
   padding: .75rem .5rem .5rem 1.5rem;
@@ -99,7 +100,6 @@ article, div {
 }
 
 .nav-bar {
-  display: inline;
   height: 5rem;
   width: 5rem;
   float: right;
@@ -143,7 +143,7 @@ article, div {
   position: relative;
 }
 
-.face-box * {
+.face-box .face {
   display: table-cell;
   vertical-align: middle;
 }
@@ -231,12 +231,78 @@ article, div {
   height: 20rem;
 }
 
+/* ANCHOR UTILITIES */
+
+.utilities {
+  height: 5rem;
+  width: 100%;
+  background-color: rgb(26, 212, 203);
+  color: white;
+  margin-bottom: 2rem;
+}
+
+.utilities>* {
+  display: inline-block;
+  height: 5rem;
+  width: calc(33% - 1rem);
+}
+
+.utilities select {
+  height: calc(100% - 2rem);
+  width: calc(100% - 3rem);
+  margin: 1rem 0;
+  margin-left: 0.5rem;
+  border-radius: .5rem;
+  border: .1rem solid transparent;
+  float: left;
+}
+
+.utilities select:focus {
+  border: .1rem solid rgb(0, 177, 168);
+  outline: none;
+}
+
+.utilities select option {
+  height: 2rem;
+}
+
+.utilities .icon {
+  font-size: 2rem;
+  width: 2rem;
+  height: 100%;
+  position: relative;
+  float: left;
+}
+
+.utilities .category {
+  margin-left: 1rem;
+  float: left;
+}
+
+.utilities .filter {}
+
+.utilities .sort {
+  margin-right: 1rem;
+  float: right;
+}
+
+.utilities .select {}
+
+.utilities .icon>* {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}
+
 @media (min-width:calc(36em/1.6)) {
   /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
   .card {
     width: calc(50% - 3rem);
   }
 }
+
+/* ANCHOR TABLET */
 
 @media (min-width:calc(60em/1.6)) {
   /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
@@ -246,15 +312,31 @@ article, div {
   .logo {
     display: inline-block;
     float: left;
-    height: 3rem;
-    width: 6rem;
+    height: 100%;
+    width: 8rem;
     text-align: center;
     color: green;
+    position: relative;
+    cursor: pointer;
+    color: white;
+  }
+  .logo .icon {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+  }
+  .search-bar {
+    height: calc(100% - 2rem);
+    width: calc(100% - 15rem);
+    padding: .75rem .5rem .5rem 1.5rem;
   }
   .card {
     width: calc(33% - 4rem);
   }
 }
+
+/* ANCHOR DESKTOP */
 
 @media (min-width:calc(102.4em/1.6)) {
   /* big landscape tablets, laptops, and desktops */

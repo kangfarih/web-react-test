@@ -2,6 +2,8 @@ import React from "react";
 import Products from "../components/Products";
 import SortOption from "../components/Sort";
 import ModalCard from "../components/ModalCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBook, faFilter } from "@fortawesome/free-solid-svg-icons";
 
 export const BaseUrlApi = "http://localhost:3000/api/";
 export const AdsTrigger = 20;
@@ -152,18 +154,6 @@ class MainPage extends React.Component {
     }
   };
 
-  // // ANCHOR EVENT HANDLER
-  // /**
-  //  * Event Handler for button update
-  //  */
-  // clickUpdate = function (e) {
-  //   e.preventDefault();
-  //   if (this.state._isLoading) {
-  //     return;
-  //   }
-  //   this.GetNextProducts();
-  // };
-
   /**
    * Event Handler for Changing Sort Select Option
    */
@@ -192,9 +182,11 @@ class MainPage extends React.Component {
     });
   };
 
+  /**
+   * Detecting for Scrolling Down to the bottom of page
+   */
   scroll() {
     window.onscroll = () => {
-      // console.log('scrolling')
       let bottomOfWindow =
         document.documentElement.scrollTop +
           window.innerHeight -
@@ -216,9 +208,25 @@ class MainPage extends React.Component {
     return (
       <div className="Main">
         <h2>ASCII FACE CATALOGUE</h2>
-        <section className="filter">
+        <article className="utilities">
+          <section className="category">
+            <span className="icon">
+              <FontAwesomeIcon icon={faBook} />
+            </span>
+            <select name="" id="">
+              <option value="Category">Category</option>
+            </select>
+          </section>
+          <section className="filter">
+            <span className="icon">
+              <FontAwesomeIcon icon={faFilter} />
+            </span>
+            <select name="" id="">
+              <option value="Category">Category</option>
+            </select>
+          </section>
           <SortOption onChangeFunc={this.onchangeSort} />
-        </section>
+        </article>
         <Products
           ads={this.state.DataAds}
           data={this.state.DataProduct}

@@ -11,7 +11,7 @@ export default function ModalCard(param) {
       <div className="background" onClick={closemodal}></div>
       <div className="box">
         <div className="face-box" style={{ fontSize: dat.size + "px" }}>
-          <span>{dat.face}</span>
+          <span className="face">{dat.face}</span>
         </div>
         <div className="detail-box">
           <div className="id">{dat.id}</div>

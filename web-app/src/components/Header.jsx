@@ -6,7 +6,9 @@ class Header extends React.Component {
   render() {
     return (
       <div className="header">
-        <section className="logo">{`(๑>ᴗ<๑)`}</section>
+        <section className="logo">
+          <span className="icon">{`(๑>ᴗ<๑)`}</span>
+        </section>
         <section className="search-bar">
           <input type="text" placeholder="Search ..." />
           <button type="submit" className="search-button">

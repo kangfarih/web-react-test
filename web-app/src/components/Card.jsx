@@ -9,14 +9,13 @@ export default function Card(param) {
   let dat = param.data;
   let ads = param.ads;
   let openmodal = () => {
-    console.log(ads);
     param.openmodal(dat);
   };
   return (
     <Fragment>
       <article id={dat.id} className="card" onClick={openmodal}>
         <div className="face-box">
-          <span id={`span-${dat.id}`}>{dat.face}</span>
+          <span className="face" id={`span-${dat.id}`}>{dat.face}</span>
         </div>
         <div className="detail-box">
           {/* <div className="id">{dat.id}</div> */}
