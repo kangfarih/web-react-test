@@ -1,9 +1,5 @@
 import { Fragment } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartPlus, faCartArrowDown } from "@fortawesome/free-solid-svg-icons";
-
 import { CardDate } from "../utilities/DateFormator";
-import { BaseUrlApi } from "../pages/MainPage";
 
 export default function Card(param) {
   let dat = param.data;

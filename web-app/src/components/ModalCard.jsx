@@ -1,4 +1,4 @@
-import {CardDate} from "../utilities/DateFormator";
+import DateFormator, {CardDate} from "../utilities/DateFormator";
 
 export default function ModalCard(param) {
   let dat = param.data;
