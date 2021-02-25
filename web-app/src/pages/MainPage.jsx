@@ -3,7 +3,7 @@ import Products from "../components/Products";
 import SortOption from "../components/Sort";
 import ModalCard from "../components/ModalCard";
 
-const BaseUrlApi = "http://localhost:3000/api/";
+export const BaseUrlApi = "http://localhost:3000/api/";
 const _TYPE = {
   GET: "get",
   PUSH: "push",
@@ -14,6 +14,7 @@ class MainPage extends React.Component {
     super(props);
     this.state = {
       DataProduct: [],
+      DataAds: [],
       _page: 1,
       _limit: 12,
       _sort: "",
@@ -21,11 +22,12 @@ class MainPage extends React.Component {
       _endCatalogue: false,
       _showModal: false,
       _modalData: {},
+      _adsTrigger: 20,
     };
 
-    this.clickUpdate = this.clickUpdate.bind(this);
     this.onchangeSort = this.onchangeSort.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.AddAds = this.AddAds.bind(this);
   }
 
   componentDidMount() {
@@ -88,6 +90,7 @@ class MainPage extends React.Component {
               this.SetDataProduct(result);
               break;
           }
+          this.AddAds();
           this.setState({ _isLoading: false });
         },
         (error) => {
@@ -112,18 +115,53 @@ class MainPage extends React.Component {
       }
     );
   };
-
-  // ANCHOR EVENT HANDLER
   /**
-   * Event Handler for button update
+   * Add New Ads to list
    */
-  clickUpdate = function (e) {
-    e.preventDefault();
-    if (this.state._isLoading) {
-      return;
+  AddAds = function () {
+    var dataProdLength = this.state.DataProduct.length;
+    var adsTrig = this.state._adsTrigger;
+    let adsSum = Math.floor(dataProdLength / adsTrig);
+    var adsList = this.state.DataAds;
+    if (adsList.length <= adsSum) {
+      let urlads = `${BaseUrlApi}ads/?r=`;
+
+      /** Make ads randomize and don't repeat same ads in a row
+       *  Check If ads have same last numbe or not
+       *  (last unit of randomize number decide whether ads is same or not)
+       */
+
+      var randomUnit = Math.floor(Math.random() * 1000);
+      var prevAds = adsList.length > 0 ? adsList[adsList.length - 1] : null;
+      if (prevAds) {
+        var pLsUnit = prevAds.substr(prevAds.length - 1);
+        var rLsUnit = randomUnit
+          .toString()
+          .substr(randomUnit.toString().length - 1);
+        while (pLsUnit == rLsUnit) {
+          randomUnit = Math.floor(Math.random() * 1000);
+          rLsUnit = randomUnit
+            .toString()
+            .substr(randomUnit.toString().length - 1);
+        }
+      }
+      urlads = urlads + randomUnit;
+      adsList.push(urlads);
+      this.setState({ DataAds: adsList });
     }
-    this.GetNextProducts();
   };
+
+  // // ANCHOR EVENT HANDLER
+  // /**
+  //  * Event Handler for button update
+  //  */
+  // clickUpdate = function (e) {
+  //   e.preventDefault();
+  //   if (this.state._isLoading) {
+  //     return;
+  //   }
+  //   this.GetNextProducts();
+  // };
 
   /**
    * Event Handler for Changing Sort Select Option
@@ -160,11 +198,11 @@ class MainPage extends React.Component {
         document.documentElement.scrollTop +
           window.innerHeight -
           document.documentElement.offsetHeight >
-          -1 &&
+          -5 &&
         document.documentElement.scrollTop +
           window.innerHeight -
           document.documentElement.offsetHeight <
-          1;
+          5;
 
       if (bottomOfWindow && !this.onloading) {
         this.GetNextProducts();
@@ -176,6 +214,7 @@ class MainPage extends React.Component {
   render() {
     return (
       <div className="Main">
+        <h2>ASCII FACE CATALOGUE</h2>
         <section className="filter">
           <SortOption onChangeFunc={this.onchangeSort} />
         </section>

@@ -50,6 +50,8 @@ article, div {
   display: none;
 }
 
+/* ANCHOR SEARCH BAR */
+
 .search-bar {
   display: block;
   float: left;
@@ -81,11 +83,14 @@ article, div {
 
 .search-bar button {
   width: 4.2rem;
-  height: 3.4rem;
+  height: 3.5rem;
   margin: 0;
   padding: 0;
   border-radius: 0 1.5rem 1.5rem 0;
   border: 0.1rem solid transparent;
+  cursor: pointer;
+  color: rgb(0, 177, 168);
+  background-color: rgb(240, 249, 255);
 }
 
 .search-bar button:focus {
@@ -101,7 +106,7 @@ article, div {
 }
 
 .nav-button {
-  font-size: 3rem;
+  font-size: 3.3rem;
   cursor: pointer;
   color: white;
 }
@@ -135,6 +140,7 @@ article, div {
   margin: 5% 5% 1rem 5%;
   border-radius: 1rem;
   font-size: 1.2rem;
+  position: relative;
 }
 
 .face-box * {
@@ -144,6 +150,16 @@ article, div {
 
 .face-box span {
   /* white-space: nowrap; */
+}
+
+.face-box .ad {
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  min-height: 100%;
+  min-width: 100%;
+  transform: translate(-50%, -50%);
+  position: absolute;
 }
 
 .detail-box {
@@ -171,6 +187,7 @@ article, div {
 
 .detail-box .date {
   right: 5%;
+  top: .5rem;
   font-size: 1rem;
   position: absolute;
   bottom: 0px;
@@ -214,7 +231,7 @@ article, div {
   height: 20rem;
 }
 
-@media (min-width:calc(32em/1.6)) {
+@media (min-width:calc(36em/1.6)) {
   /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
   .card {
     width: calc(50% - 3rem);
