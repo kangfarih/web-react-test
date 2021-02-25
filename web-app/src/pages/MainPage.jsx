@@ -4,6 +4,7 @@ import SortOption from "../components/Sort";
 import ModalCard from "../components/ModalCard";
 
 export const BaseUrlApi = "http://localhost:3000/api/";
+export const AdsTrigger = 20;
 const _TYPE = {
   GET: "get",
   PUSH: "push",
@@ -22,7 +23,6 @@ class MainPage extends React.Component {
       _endCatalogue: false,
       _showModal: false,
       _modalData: {},
-      _adsTrigger: 20,
     };
 
     this.onchangeSort = this.onchangeSort.bind(this);
@@ -70,6 +70,7 @@ class MainPage extends React.Component {
     this.setState({ _isLoading: true });
     if (type === _TYPE.GET) {
       this.setState({ DataProduct: [] });
+      this.setState({ DataAds: [] });
     }
     fetch(
       `${BaseUrlApi}products?_page=${this.state._page}&_limit=${this.state._limit}&_sort=${this.state._sort}`
@@ -120,10 +121,10 @@ class MainPage extends React.Component {
    */
   AddAds = function () {
     var dataProdLength = this.state.DataProduct.length;
-    var adsTrig = this.state._adsTrigger;
+    var adsTrig = AdsTrigger;
     let adsSum = Math.floor(dataProdLength / adsTrig);
     var adsList = this.state.DataAds;
-    if (adsList.length <= adsSum) {
+    while (adsList.length < adsSum) {
       let urlads = `${BaseUrlApi}ads/?r=`;
 
       /** Make ads randomize and don't repeat same ads in a row
@@ -219,6 +220,7 @@ class MainPage extends React.Component {
           <SortOption onChangeFunc={this.onchangeSort} />
         </section>
         <Products
+          ads={this.state.DataAds}
           data={this.state.DataProduct}
           isLoading={this.state._isLoading}
           isEndCatalogue={this.state._endCatalogue}

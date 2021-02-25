@@ -1,19 +1,11 @@
-import React, { useState } from "react";
 import Card from "./Card";
-import { BaseUrlApi } from "../pages/MainPage";
+import { BaseUrlApi, AdsTrigger } from "../pages/MainPage";
 
 export default function Product(param) {
-  const [adsList, setAdsList] = useState([]);
 
   var loadingProduct = <div></div>;
   var endCatalogue = <div></div>;
   var openmodal = param.toggleModal;
-
-  var addAds = function () {
-    let urlads = `${BaseUrlApi}ads/?r=${Math.floor(Math.random() * 1000)}`;
-    setAdsList(adsList.push[urlads]);
-  };
-  
 
   // ANCHOR END CATALOGUE
   if (param.isEndCatalogue) {
@@ -36,10 +28,11 @@ export default function Product(param) {
   return (
     <article className="products">
       {param.data.map((dat, key) => {
-        let withAds = (key + 1) % 20 === 0;
+        let withAds = (key + 1) % AdsTrigger === 0;
         if (withAds) {
+          let idx = Math.floor(key/AdsTrigger);
           return (
-            <Card key={dat.id} data={dat} openmodal={openmodal} ads={true} />
+            <Card key={dat.id} data={dat} openmodal={openmodal} ads={param.ads[idx]} />
           );
         } else {
           return <Card key={dat.id} data={dat} openmodal={openmodal} />;

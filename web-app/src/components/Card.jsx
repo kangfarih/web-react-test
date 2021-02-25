@@ -9,27 +9,11 @@ export default function Card(param) {
   let dat = param.data;
   let ads = param.ads;
   let openmodal = () => {
+    console.log(ads);
     param.openmodal(dat);
-  };
-  let adsUrl = () => {
-    return `${BaseUrlApi}ads/?r=${Math.floor(Math.random() * 1000)}`;
   };
   return (
     <Fragment>
-      {ads ? (
-        <article className="card">
-          <div className="face-box">
-            <img className="ad" src={adsUrl()} />
-          </div>
-          <div className="detail-box">
-            {/* <div className="id">{dat.id}</div> */}
-            <div className="size">Our Sponsor</div>
-            {/* <div className="price">$0.01</div> */}
-            <div className="date">Ads</div>
-          </div>
-        </article>
-      ) : null}
-
       <article id={dat.id} className="card" onClick={openmodal}>
         <div className="face-box">
           <span id={`span-${dat.id}`}>{dat.face}</span>
@@ -46,6 +30,20 @@ export default function Card(param) {
           </div> */}
         </div>
       </article>
+
+      {ads ? (
+        <article className="card">
+          <div className="face-box">
+            <img className="ad" src={ads} />
+          </div>
+          <div className="detail-box">
+            {/* <div className="id">{dat.id}</div> */}
+            <div className="size">Our Sponsor</div>
+            {/* <div className="price">$0.01</div> */}
+            <div className="date">Ads</div>
+          </div>
+        </article>
+      ) : null}
     </Fragment>
   );
 }
