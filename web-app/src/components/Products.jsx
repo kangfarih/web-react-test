@@ -20,6 +20,7 @@ export default function Product(param) {
       </div>
     );
   }
+  
   return (
     <article className="products">
       <h5>ASCII FACE CATALOGUE</h5>

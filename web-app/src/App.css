@@ -6,6 +6,24 @@ article, div {
   overflow: hidden;
 }
 
+/* ScrollBar */
+
+::-webkit-scrollbar {
+  width: 1rem;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(26, 212, 203, 0.3);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(26, 212, 203, 0.596);
+}
+
 /* Default Media : smartphones, portrait iPhone, portrait 480x320 phones (Android) */
 
 .App {
@@ -25,7 +43,7 @@ article, div {
 .header {
   background-color: rgb(26, 212, 203);
   font-size: 10px;
-  height: 5em;
+  height: 5rem;
 }
 
 .logo {
@@ -33,18 +51,60 @@ article, div {
 }
 
 .search-bar {
-  display: inline-block;
+  display: block;
+  float: left;
+  height: calc(100% - 2rem);
+  width: calc(100% - 7rem);
+  padding: .75rem .5rem .5rem 1.5rem;
+}
+
+.search-bar input {
   height: 100%;
+  width: calc(100% - 7rem);
+  border-radius: 1.5rem 0 0 1.5rem;
+  border: 0.1rem solid transparent;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border: 0.1rem solid rgb(85, 221, 214);
+}
+
+.search-bar input[type="text"] {
+  padding-left: 2rem;
+  color: rgb(0, 177, 168);
+}
+
+.search-bar input::placeholder {
+  color: rgb(0, 177, 168);
+}
+
+.search-bar button {
+  width: 4.2rem;
+  height: 3.4rem;
+  margin: 0;
+  padding: 0;
+  border-radius: 0 1.5rem 1.5rem 0;
+  border: 0.1rem solid transparent;
+}
+
+.search-bar button:focus {
+  outline: none;
+  border: 0.1rem solid rgb(85, 221, 214);
 }
 
 .nav-bar {
-  display: inline-block;
+  display: inline;
   height: 5rem;
+  width: 5rem;
   float: right;
-  background-color: white;
 }
 
-.nav-button {}
+.nav-button {
+  font-size: 3rem;
+  cursor: pointer;
+  color: white;
+}
 
 .App-main {
   padding-top: 5rem;
@@ -53,6 +113,7 @@ article, div {
 .products {}
 
 /* ANCHOR CARD */
+
 .card {
   width: 80vw;
   height: 20rem;
@@ -73,11 +134,16 @@ article, div {
   background-color: rgba(159, 249, 255, 0.171);
   margin: 5% 5% 1rem 5%;
   border-radius: 1rem;
+  font-size: 1.2rem;
 }
 
 .face-box * {
   display: table-cell;
   vertical-align: middle;
+}
+
+.face-box span {
+  /* white-space: nowrap; */
 }
 
 .detail-box {
@@ -121,7 +187,7 @@ article, div {
   z-index: 99;
 }
 
-.modal-card.show{
+.modal-card.show {
   display: block;
 }
 
@@ -135,7 +201,8 @@ article, div {
 .modal-card .box {
   position: absolute;
   height: 40rem;
-  width: 30rem;
+  width: 80%;
+  max-width: 50rem;
   background-color: white;
   top: 50%;
   left: 50%;
@@ -143,14 +210,14 @@ article, div {
   border-radius: 1rem;
 }
 
-.modal-card .face-box{
+.modal-card .face-box {
   height: 20rem;
 }
 
 @media (min-width:calc(32em/1.6)) {
   /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
   .card {
-    width: 40vw;
+    width: calc(50% - 3rem);
   }
 }
 
@@ -168,7 +235,7 @@ article, div {
     color: green;
   }
   .card {
-    width: 25vw;
+    width: calc(33% - 4rem);
   }
 }
 
@@ -178,6 +245,6 @@ article, div {
     color: rgb(0, 183, 255);
   }
   .card {
-    width: 20vw;
+    max-width: calc((100% / 4) - 8rem);
   }
 }
