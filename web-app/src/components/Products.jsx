@@ -3,6 +3,7 @@ import Card from "./Card";
 export default function Product(param) {
   var loadingProduct = <div></div>;
   var endCatalogue = <div></div>;
+  var openmodal = param.toggleModal;
 
   if (param.isEndCatalogue) {
     endCatalogue = (
@@ -23,7 +24,7 @@ export default function Product(param) {
     <article className="products">
       <h5>ASCII FACE CATALOGUE</h5>
       {param.data.map((dat, key) => {
-        return <Card key={key} data={dat} />;
+        return <Card key={key} data={dat} openmodal={openmodal}/>;
       })}
       {loadingProduct}
       {endCatalogue}

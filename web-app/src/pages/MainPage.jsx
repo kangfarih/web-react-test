@@ -1,6 +1,7 @@
 import React from "react";
 import Products from "../components/Products";
 import SortOption from "../components/Sort";
+import ModalCard from "../components/ModalCard";
 
 const BaseUrlApi = "http://localhost:3000/api/";
 const _TYPE = {
@@ -18,10 +19,13 @@ class MainPage extends React.Component {
       _sort: "",
       _isLoading: false,
       _endCatalogue: false,
+      _showModal: false,
+      _modalData: {},
     };
 
     this.clickUpdate = this.clickUpdate.bind(this);
     this.onchangeSort = this.onchangeSort.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
   componentDidMount() {
@@ -137,6 +141,18 @@ class MainPage extends React.Component {
     );
   };
 
+  /**
+   *
+   * @param {Object} data - Object Data Product
+   * @param {boolean} display - True / False
+   */
+  toggleModal = function (data, display = true) {
+    this.setState({
+      _showModal: display,
+      _modalData: data,
+    });
+  };
+
   scroll() {
     window.onscroll = () => {
       // console.log('scrolling')
@@ -167,6 +183,12 @@ class MainPage extends React.Component {
           data={this.state.DataProduct}
           isLoading={this.state._isLoading}
           isEndCatalogue={this.state._endCatalogue}
+          toggleModal={this.toggleModal}
+        />
+        <ModalCard
+          show={this.state._showModal}
+          toggleModal={this.toggleModal}
+          data={this.state.DataProduct.length > 1 ? this.state._modalData : ""}
         />
         {/* <button onClick={this.clickUpdate}>Update</button> */}
       </div>

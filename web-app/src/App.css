@@ -13,16 +13,17 @@ article, div {
   background-color: white;
   min-height: 100vh;
   font-size: 1.6rem;
-  color: #282c34;
+  color: #6e6e6e;
 }
 
 .App-header {
   position: fixed;
   width: 100%;
+  z-index: 1;
 }
 
 .header {
-  background-color: wheat;
+  background-color: rgb(26, 212, 203);
   font-size: 10px;
   height: 5em;
 }
@@ -51,15 +52,99 @@ article, div {
 
 .products {}
 
+/* ANCHOR CARD */
 .card {
   width: 80vw;
   height: 20rem;
   display: inline-block;
-  background-color: thistle;
+  background-color: white;
+  box-shadow: rgb(49 53 59 / 12%) 0px 1px 6px 0px;
   border-radius: 1rem;
   padding: 0.2rem;
-  margin: 0 0.2rem;
+  margin: 0.5rem 0.8rem;
   cursor: default;
+  cursor: pointer;
+}
+
+.face-box {
+  height: 10rem;
+  width: 90%;
+  display: table;
+  background-color: rgba(159, 249, 255, 0.171);
+  margin: 5% 5% 1rem 5%;
+  border-radius: 1rem;
+}
+
+.face-box * {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.detail-box {
+  text-align: left;
+  padding: 0 5%;
+  position: relative;
+  height: 7.5rem;
+}
+
+.detail-box .id {
+  font-size: 1.2rem;
+}
+
+.detail-box .size {
+  margin-top: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.detail-box .price {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: rgb(12, 163, 173);
+}
+
+.detail-box .date {
+  right: 5%;
+  font-size: 1rem;
+  position: absolute;
+  bottom: 0px;
+}
+
+/* ANCHOR MODAL CARD */
+
+.modal-card {
+  display: none;
+  position: fixed;
+  top: 0px;
+  height: 100%;
+  width: 100%;
+  z-index: 99;
+}
+
+.modal-card.show{
+  display: block;
+}
+
+.modal-card .background {
+  background-color: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-card .box {
+  position: absolute;
+  height: 40rem;
+  width: 30rem;
+  background-color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 1rem;
+}
+
+.modal-card .face-box{
+  height: 20rem;
 }
 
 @media (min-width:calc(32em/1.6)) {
