@@ -11,6 +11,7 @@ const _TYPE = {
   GET: "get",
   PUSH: "push",
 };
+export const LimitFetch = 12;
 
 class MainPage extends React.Component {
   constructor(props) {
@@ -19,7 +20,6 @@ class MainPage extends React.Component {
       DataProduct: [],
       DataAds: [],
       _page: 1,
-      _limit: 12,
       _sort: "",
       _isLoading: false,
       _endCatalogue: false,
@@ -68,14 +68,14 @@ class MainPage extends React.Component {
    */
   GetProducts = function (type = _TYPE.GET) {
     console.log(`Fetch from ${BaseUrlApi}products?_page=${this.state._page}
-    &_limit=${this.state._limit}&_sort=${this.state._sort}`);
+    &_limit=${LimitFetch}&_sort=${this.state._sort}`);
     this.setState({ _isLoading: true });
     if (type === _TYPE.GET) {
       this.setState({ DataProduct: [] });
       this.setState({ DataAds: [] });
     }
     fetch(
-      `${BaseUrlApi}products?_page=${this.state._page}&_limit=${this.state._limit}&_sort=${this.state._sort}`
+      `${BaseUrlApi}products?_page=${this.state._page}&_limit=${LimitFetch}&_sort=${this.state._sort}`
     )
       .then((res) => res.json())
       .then(

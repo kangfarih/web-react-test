@@ -1,5 +1,5 @@
 import Card, { CardLoading } from "./Card";
-import { BaseUrlApi, AdsTrigger } from "../pages/MainPage";
+import { BaseUrlApi, LimitFetch, AdsTrigger } from "../pages/MainPage";
 import { Fragment, Suspense } from "react";
 
 export default function Product(param) {
@@ -7,7 +7,7 @@ export default function Product(param) {
   var openmodal = param.toggleModal;
   var loadingCard = [];
 
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < LimitFetch; i++) {
     loadingCard.push(<CardLoading key={"loading" + i} />);
   }
 
@@ -62,8 +62,12 @@ function AdsLoading(param) {
   let dat = param.data.data;
   let loadCard = param.loadCard;
   let prevAds = Math.floor(dat.length / AdsTrigger);
-  let withAds = prevAds != Math.floor((dat.length + 12) / AdsTrigger);
-  console.log(`dat:${dat.length} : ${prevAds} ${Math.floor((dat.length + 12) / AdsTrigger)}`);
+  let withAds = prevAds != Math.floor((dat.length + LimitFetch) / AdsTrigger);
+  console.log(
+    `dat:${dat.length} : ${prevAds} ${Math.floor(
+      (dat.length + LimitFetch) / AdsTrigger
+    )}`
+  );
 
   if (withAds && param.data.isLoading) {
     return loadCard;
