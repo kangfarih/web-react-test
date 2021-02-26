@@ -11,7 +11,7 @@ export default function Product(param) {
   if (param.isEndCatalogue) {
     endCatalogue = (
       <div className="end-catalogue">
-        <strong>End of Catalogue</strong>
+        <span>End of Catalogue</span>
       </div>
     );
   }
@@ -36,11 +36,13 @@ export default function Product(param) {
           }
         })}
       </article>
-      <LoadingProduct
-        isLoading={param.isLoading}
-        type={param.data.length == 0 ? "empty" : ""}
-      />
-      {endCatalogue}
+      <article className="loading-box">
+        <LoadingProduct
+          isLoading={param.isLoading}
+          type={param.data.length == 0 ? "empty" : ""}
+        />
+        {endCatalogue}
+      </article>
     </Fragment>
   );
 }
