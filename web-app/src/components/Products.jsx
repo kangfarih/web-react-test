@@ -1,11 +1,15 @@
-import Card from "./Card";
+import Card, { CardLoading } from "./Card";
 import { BaseUrlApi, AdsTrigger } from "../pages/MainPage";
-import { Fragment } from "react";
+import { Fragment, Suspense } from "react";
 
 export default function Product(param) {
-  var loadingProduct = <div></div>;
   var endCatalogue = <div></div>;
   var openmodal = param.toggleModal;
+  var loadingCard = [];
+
+  for (let i = 0; i < 12; i++) {
+    loadingCard.push(<CardLoading key={"loading" + i} />);
+  }
 
   // ANCHOR END CATALOGUE
   if (param.isEndCatalogue) {
@@ -25,7 +29,7 @@ export default function Product(param) {
             let idx = Math.floor(key / AdsTrigger);
             return (
               <Card
-                key={dat.id}
+                key={key}
                 data={dat}
                 openmodal={openmodal}
                 ads={param.ads[idx]}
@@ -35,12 +39,17 @@ export default function Product(param) {
             return <Card key={dat.id} data={dat} openmodal={openmodal} />;
           }
         })}
+        {param.isLoading
+          ? loadingCard.map((dat, key) => {
+              return dat;
+            })
+          : null}
       </article>
       <article className="loading-box">
-        <LoadingProduct
+        {/* <LoadingProduct
           isLoading={param.isLoading}
           type={param.data.length == 0 ? "empty" : ""}
-        />
+        /> */}
         {endCatalogue}
       </article>
     </Fragment>

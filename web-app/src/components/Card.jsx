@@ -11,7 +11,13 @@ export default function Card(param) {
     <Fragment>
       <article id={dat.id} className="card" onClick={openmodal}>
         <div className="face-box">
-          <span className="face" id={`span-${dat.id}`} style={{ fontSize: dat.size + "px" }}>{dat.face}</span>
+          <span
+            className="face"
+            id={`span-${dat.id}`}
+            style={{ fontSize: dat.size + "px" }}
+          >
+            {dat.face}
+          </span>
         </div>
         <div className="detail-box">
           {/* <div className="id">{dat.id}</div> */}
@@ -39,6 +45,22 @@ export default function Card(param) {
           </div>
         </article>
       ) : null}
+    </Fragment>
+  );
+}
+
+export function CardLoading(param) {
+  return (
+    <Fragment>
+      <article id="" className="card">
+        <div className="card-load face-box">
+        </div>
+        <div className="detail-box">
+          <div className="card-load size"></div>
+          <div className="card-load price"></div>
+          <div className="card-load date"></div>
+        </div>
+      </article>
     </Fragment>
   );
 }
