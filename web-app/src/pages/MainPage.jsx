@@ -129,22 +129,22 @@ class MainPage extends React.Component {
    * Load Next Data
    */
   GetNextProducts = function () {
-    console.log("Get Next Product");
     if (this.state._isLoading || this.state._endCatalogue) {
       return;
     }
-    this.setState(
-      (state) => {
-        return { _page: state._page + 1 };
-      },
-      () => {
-        if (this.state.DataCache.length > 0) {
-          this.LoadFromCache();
-        } else {
+    console.log("Get Next Product");
+    if (this.state.DataCache.length > 0) {
+      this.LoadFromCache();
+    } else {
+      this.setState(
+        (state) => {
+          return { _page: state._page + 1 };
+        },
+        () => {
           this.GetProducts(_TYPE.PUSH);
         }
-      }
-    );
+      );
+    }
   };
 
   /**
