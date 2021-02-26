@@ -115,6 +115,22 @@ article, div {
   cursor: pointer;
 }
 
+/* ANCHOR CAROUSEL */
+
+.carousel {
+  min-height: 15rem;
+  position: relative;
+}
+
+.carousel>* {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  margin: 0rem;
+}
+
 /* ANCHOR APP MAIN */
 
 .App-main {
@@ -131,7 +147,7 @@ article, div {
 .card {
   width: 80vw;
   height: 20rem;
-  display: inline-block;
+  display: block;
   background-color: white;
   box-shadow: rgb(49 53 59 / 12%) 0px 1px 6px 0px;
   border-radius: 1rem;
@@ -317,7 +333,7 @@ article, div {
 }
 
 .loading.show.full {
-  min-height: calc(100vh - 21rem);
+  min-height: calc(100vh - 30rem);
 }
 
 .loading>* {
@@ -326,6 +342,57 @@ article, div {
   left: 50%;
   transform: translate(-50%, -50%);
   position: absolute;
+}
+
+.loadingText {
+  font-size: 4rem;
+  font-family: sans-serif;
+  font-weight: 600;
+  text-align: center;
+  padding-bottom: 1rem;
+  width: 100%;
+}
+
+.loadingText span {
+  display: inline-block;
+  margin: 5px;
+}
+
+.loadingText span {
+  animation: loadingText 0.7s infinite;
+}
+
+.loadingText span:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.loadingText span:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.loadingText span:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.loadingText span:nth-child(5) {
+  animation-delay: 0.4s;
+}
+
+.loadingText span:nth-child(6) {
+  animation-delay: 0.5s;
+}
+
+.loadingText span:nth-child(7) {
+  animation-delay: 0.6s;
+}
+
+@keyframes loadingText {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(15px);
+  }
 }
 
 @media (min-width:calc(36em/1.6)) {
@@ -361,6 +428,9 @@ article, div {
     width: calc(100% - 15rem);
     padding: .75rem .5rem .5rem 1.5rem;
   }
+  .carousel {
+    min-height: 20rem;
+  }
   .card {
     width: 80vw;
     height: 21rem;
@@ -376,6 +446,9 @@ article, div {
   .modal-card .box {
     height: 37rem;
   }
+  .loading.show.full {
+    min-height: calc(100vh - 35rem);
+  }
 }
 
 /* ANCHOR DESKTOP */
@@ -387,6 +460,9 @@ article, div {
   }
   .App .App-header, .App .App-main, .App {
     max-width: 128rem;
+  }
+  .carousel {
+    min-height: 25rem;
   }
   .card {
     max-width: calc(25% - 2rem);
@@ -402,21 +478,24 @@ article, div {
   .nav-bar .nav-button {
     display: none;
   }
-  .nav-bar ul.menu{
+  .nav-bar ul.menu {
     height: 100%;
     margin: 0;
     display: table;
     float: right;
     margin-right: 2rem;
   }
-  .nav-bar ul.menu li{
+  .nav-bar ul.menu li {
     cursor: pointer;
     height: 100%;
     padding: 0rem 0.5rem;
     vertical-align: middle;
     display: table-cell;
   }
-  .nav-bar ul.menu li:hover{
+  .nav-bar ul.menu li:hover {
     background-color: rgb(21, 173, 166);
+  }
+  .loading.show.full {
+    min-height: calc(100vh - 40rem);
   }
 }

@@ -184,6 +184,7 @@ export function CardDate(date) {
 
     let interval = 604800; //60sec * 60minutes * 24hours * 7days || 1 week
     if (seconds > interval) {
+        // Return formated date
         let dateString = DateFormator(new Date(date), "M jS, Y");
         return dateString;
     }

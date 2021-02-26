@@ -53,7 +53,15 @@ function LoadingProduct(param) {
         param.type == "empty" ? "full" : ""
       }`}
     >
-      <strong>Loading</strong>
+      <div className="loadingText">
+        <span>L</span>
+        <span>O</span>
+        <span>A</span>
+        <span>D</span>
+        <span>I</span>
+        <span>N</span>
+        <span>G</span>
+      </div>
     </div>
   );
 }

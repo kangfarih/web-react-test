@@ -39,7 +39,7 @@ class MainPage extends React.Component {
 
   componentWillUnmount() {}
 
-  // ANCHOR STATE UTILITY
+  // ANCHOR DATA PRODUCT STATE CONTROL
   /**
    * **Replace** DataProduct Array with new data
    * @param {Array} data - Array of product data
@@ -60,7 +60,7 @@ class MainPage extends React.Component {
     this.setState({ DataProduct: products });
   };
 
-  // ANCHOR MAIN PAGE FUNCTION
+  // ANCHOR DATA PRODUCT FUNCTION
   /**
    * Get Data Product from backend
    *
@@ -118,8 +118,10 @@ class MainPage extends React.Component {
       }
     );
   };
+
+  // ANCHOR ADS GENERATOR
   /**
-   * Add New Ads to list
+   *  Add New Ads to list
    */
   AddAds = function () {
     var dataProdLength = this.state.DataProduct.length;
@@ -154,6 +156,7 @@ class MainPage extends React.Component {
     }
   };
 
+  // ANCHOR EVENT HANDLER
   /**
    * Event Handler for Changing Sort Select Option
    */
@@ -203,11 +206,13 @@ class MainPage extends React.Component {
     };
   }
 
-  // ANCHOR RENDER
+  // ANCHOR RENDER ( )
   render() {
     return (
       <div className="Main">
-        <h2>ASCII FACE CATALOGUE</h2>
+        <article className="carousel">
+          <h2>ASCII FACE CATALOGUE</h2>
+        </article>
         <article className="utilities">
           <section className="category">
             <span className="icon">
