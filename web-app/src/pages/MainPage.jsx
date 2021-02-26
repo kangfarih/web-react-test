@@ -162,7 +162,7 @@ class MainPage extends React.Component {
    */
   onchangeSort = function (e) {
     e.preventDefault();
-    console.log(e.target.value);
+    // console.log(e.target.value);
     this.setState(
       (state) => {
         return { _sort: e.target.value };
@@ -190,20 +190,24 @@ class MainPage extends React.Component {
    */
   scroll() {
     window.onscroll = () => {
-      let bottomOfWindow =
-        document.documentElement.scrollTop +
-          window.innerHeight -
-          document.documentElement.offsetHeight >
-          -5 &&
-        document.documentElement.scrollTop +
-          window.innerHeight -
-          document.documentElement.offsetHeight <
-          5;
-
-      if (bottomOfWindow && !this.onloading) {
-        this.GetNextProducts();
-      }
+      this.checkForUpdate();
     };
+  }
+
+  checkForUpdate() {
+    let bottomOfWindow =
+      document.documentElement.scrollTop +
+        window.innerHeight -
+        document.documentElement.offsetHeight >
+        -5 &&
+      document.documentElement.scrollTop +
+        window.innerHeight -
+        document.documentElement.offsetHeight <
+        5;
+
+    if (bottomOfWindow && !this.onloading) {
+      this.GetNextProducts();
+    }
   }
 
   // ANCHOR RENDER ( )

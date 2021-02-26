@@ -44,6 +44,7 @@ export default function Product(param) {
               return dat;
             })
           : null}
+        <AdsLoading data={param} loadCard={loadingCard[0]} />
       </article>
       <article className="loading-box">
         {/* <LoadingProduct
@@ -54,6 +55,21 @@ export default function Product(param) {
       </article>
     </Fragment>
   );
+}
+
+// ANCHOR ADS LOADING SKELETON
+function AdsLoading(param) {
+  let dat = param.data.data;
+  let loadCard = param.loadCard;
+  let prevAds = Math.floor(dat.length / AdsTrigger);
+  let withAds = prevAds != Math.floor((dat.length + 12) / AdsTrigger);
+  console.log(`dat:${dat.length} : ${prevAds} ${Math.floor((dat.length + 12) / AdsTrigger)}`);
+
+  if (withAds && param.data.isLoading) {
+    return loadCard;
+  } else {
+    return null;
+  }
 }
 
 // ANCHOR ON LOADING

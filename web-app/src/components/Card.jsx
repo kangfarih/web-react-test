@@ -49,7 +49,7 @@ export default function Card(param) {
   );
 }
 
-export function CardLoading(param) {
+export function CardLoading() {
   return (
     <Fragment>
       <article id="" className="card">
