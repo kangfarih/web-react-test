@@ -13,6 +13,8 @@ const _TYPE = {
 };
 export const LimitFetch = 12;
 
+var checkUpdate;
+
 class MainPage extends React.Component {
   constructor(props) {
     super(props);
@@ -37,7 +39,9 @@ class MainPage extends React.Component {
     this.scroll();
   }
 
-  componentWillUnmount() {}
+  componentWillUnmount() {
+    clearInterval(checkUpdate);
+  }
 
   // ANCHOR DATA PRODUCT STATE CONTROL
   /**
@@ -188,13 +192,20 @@ class MainPage extends React.Component {
   /**
    * Detecting for Scrolling Down to the bottom of page
    */
-  scroll() {
+  scroll = function () {
     window.onscroll = () => {
       this.checkForUpdate();
     };
-  }
+    // Set Interval for checking Bottom of window
+    checkUpdate = setInterval(() => {
+      if (this.state._isLoading || this.state._endCatalogue) {
+        return;
+      }
+      this.checkForUpdate();
+    }, 1000);
+  };
 
-  checkForUpdate() {
+  checkForUpdate = function () {
     let bottomOfWindow =
       document.documentElement.scrollTop +
         window.innerHeight -
@@ -208,7 +219,7 @@ class MainPage extends React.Component {
     if (bottomOfWindow && !this.onloading) {
       this.GetNextProducts();
     }
-  }
+  };
 
   // ANCHOR RENDER ( )
   render() {

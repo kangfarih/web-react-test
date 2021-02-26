@@ -63,11 +63,6 @@ function AdsLoading(param) {
   let loadCard = param.loadCard;
   let prevAds = Math.floor(dat.length / AdsTrigger);
   let withAds = prevAds != Math.floor((dat.length + LimitFetch) / AdsTrigger);
-  console.log(
-    `dat:${dat.length} : ${prevAds} ${Math.floor(
-      (dat.length + LimitFetch) / AdsTrigger
-    )}`
-  );
 
   if (withAds && param.data.isLoading) {
     return loadCard;
@@ -76,7 +71,7 @@ function AdsLoading(param) {
   }
 }
 
-// ANCHOR ON LOADING
+// ANCHOR ON LOADING === UNUSED ANYMORE
 function LoadingProduct(param) {
   return (
     <div
