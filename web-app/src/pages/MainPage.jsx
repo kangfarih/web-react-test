@@ -4,14 +4,16 @@ import SortOption from "../components/Sort";
 import ModalCard from "../components/ModalCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faFilter } from "@fortawesome/free-solid-svg-icons";
-
+import IdleTimer from "react-idle-timer";
 export const BaseUrlApi = "http://localhost:3000/api/";
 export const AdsTrigger = 20;
 const _TYPE = {
   GET: "get",
   PUSH: "push",
+  CACHE: "cache",
 };
 export const LimitFetch = 12;
+export const IdleTimeout = 5;
 
 var checkUpdate;
 
@@ -20,6 +22,7 @@ class MainPage extends React.Component {
     super(props);
     this.state = {
       DataProduct: [],
+      DataCache: [],
       DataAds: [],
       _page: 1,
       _sort: "",
@@ -32,8 +35,14 @@ class MainPage extends React.Component {
     this.onchangeSort = this.onchangeSort.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.AddAds = this.AddAds.bind(this);
+
+    this.idleTimer = null;
+    this.handleOnAction = this.handleOnAction.bind(this);
+    this.handleOnActive = this.handleOnActive.bind(this);
+    this.handleOnIdle = this.handleOnIdle.bind(this);
   }
 
+  // ANCHOR COMPONENT DIDMOUNT
   componentDidMount() {
     this.GetProducts(_TYPE.GET);
     this.scroll();
@@ -64,6 +73,12 @@ class MainPage extends React.Component {
     this.setState({ DataProduct: products });
   };
 
+  SetDataCache = function (data) {
+    let products = [];
+    products.push(...data);
+    this.setState({ DataCache: products });
+  };
+
   // ANCHOR DATA PRODUCT FUNCTION
   /**
    * Get Data Product from backend
@@ -72,11 +87,12 @@ class MainPage extends React.Component {
    */
   GetProducts = function (type = _TYPE.GET) {
     console.log(`Fetch from ${BaseUrlApi}products?_page=${this.state._page}
-    &_limit=${LimitFetch}&_sort=${this.state._sort}`);
-    this.setState({ _isLoading: true });
+    &_limit=${LimitFetch}&_sort=${this.state._sort} : ${type}`);
+    if (type != _TYPE.CACHE) {
+      this.setState({ _isLoading: true });
+    }
     if (type === _TYPE.GET) {
-      this.setState({ DataProduct: [] });
-      this.setState({ DataAds: [] });
+      this.setState({ DataAds: [], DataCache: [], DataProduct: [] });
     }
     fetch(
       `${BaseUrlApi}products?_page=${this.state._page}&_limit=${LimitFetch}&_sort=${this.state._sort}`
@@ -89,6 +105,9 @@ class MainPage extends React.Component {
             return;
           }
           switch (type) {
+            case _TYPE.CACHE:
+              this.SetDataCache(result);
+              break;
             case _TYPE.PUSH:
               this.PushDataProduct(result);
               break;
@@ -110,6 +129,7 @@ class MainPage extends React.Component {
    * Load Next Data
    */
   GetNextProducts = function () {
+    console.log("Get Next Product");
     if (this.state._isLoading || this.state._endCatalogue) {
       return;
     }
@@ -118,9 +138,45 @@ class MainPage extends React.Component {
         return { _page: state._page + 1 };
       },
       () => {
-        this.GetProducts(_TYPE.PUSH);
+        if (this.state.DataCache.length > 0) {
+          this.LoadFromCache();
+        } else {
+          this.GetProducts(_TYPE.PUSH);
+        }
       }
     );
+  };
+
+  /**
+   * Get Cache data when idle
+   */
+  GetDataCache = function () {
+    if (this.state.DataCache.length > 0) {
+      return;
+    }
+    console.log("Get Data Cache");
+    this.setState(
+      (state) => {
+        return { _page: state._page + 1 };
+      },
+      () => {
+        this.GetProducts(_TYPE.CACHE);
+      }
+    );
+  };
+
+  LoadFromCache = function () {
+    if (this.state.DataCache.length == 0) {
+      return;
+    }
+    let _prod = this.state.DataProduct;
+    let _cach = this.state.DataCache;
+    _prod = _prod.concat(_cach);
+
+    this.setState({
+      DataCache: [],
+      DataProduct: _prod,
+    });
   };
 
   // ANCHOR ADS GENERATOR
@@ -178,7 +234,6 @@ class MainPage extends React.Component {
   };
 
   /**
-   *
    * @param {Object} data - Object Data Product
    * @param {boolean} display - True / False
    */
@@ -189,6 +244,7 @@ class MainPage extends React.Component {
     });
   };
 
+  // ANCHOR SCROLL DETECTING
   /**
    * Detecting for Scrolling Down to the bottom of page
    */
@@ -197,15 +253,16 @@ class MainPage extends React.Component {
       this.checkForUpdate();
     };
     // Set Interval for checking Bottom of window
-    checkUpdate = setInterval(() => {
-      if (this.state._isLoading || this.state._endCatalogue) {
-        return;
-      }
-      this.checkForUpdate();
-    }, 1000);
+    // checkUpdate = setInterval(() => {
+    //   if (this.state._isLoading || this.state._endCatalogue) {
+    //     return;
+    //   }
+    //   this.checkForUpdate();
+    // }, 1000);
   };
 
   checkForUpdate = function () {
+    // console.log("Check Update from Scroll");
     let bottomOfWindow =
       document.documentElement.scrollTop +
         window.innerHeight -
@@ -221,10 +278,35 @@ class MainPage extends React.Component {
     }
   };
 
+  handleOnAction(event) {
+    // console.log("user did something", event);
+  }
+
+  handleOnActive(event) {
+    // console.log("user is active", event);
+    // console.log("time remaining", this.idleTimer.getRemainingTime());
+  }
+
+  handleOnIdle(event) {
+    // console.log("user is idle", event);
+    // console.log("last active", this.idleTimer.getLastActiveTime());
+    this.GetDataCache();
+  }
+
   // ANCHOR RENDER ( )
   render() {
     return (
       <div className="Main">
+        <IdleTimer
+          ref={(ref) => {
+            this.idleTimer = ref;
+          }}
+          timeout={1000 * IdleTimeout}
+          onActive={this.handleOnActive}
+          onIdle={this.handleOnIdle}
+          onAction={this.handleOnAction}
+          debounce={250}
+        />
         <article className="carousel">
           <h2>ASCII FACE CATALOGUE</h2>
         </article>
