@@ -4,7 +4,6 @@ import SortOption from "../components/Sort";
 import ModalCard from "../components/ModalCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faFilter } from "@fortawesome/free-solid-svg-icons";
-import IdleTimer from "react-idle-timer";
 export const BaseUrlApi = "http://localhost:3000/api/";
 export const AdsTrigger = 20;
 const _TYPE = {
@@ -16,6 +15,7 @@ export const LimitFetch = 12;
 export const IdleTimeout = 5;
 
 var checkUpdate;
+var _page = 0;
 
 class MainPage extends React.Component {
   constructor(props) {
@@ -25,7 +25,7 @@ class MainPage extends React.Component {
       DataCache: [],
       DataAds: [],
       _page: 0,
-      _sort: "",
+      _sort: "default",
       _showLoading: false,
       _onFetch: false,
       _endCatalogue: false,
@@ -36,16 +36,10 @@ class MainPage extends React.Component {
     this.onchangeSort = this.onchangeSort.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.AddAds = this.AddAds.bind(this);
-
-    this.idleTimer = null;
-    this.handleOnAction = this.handleOnAction.bind(this);
-    this.handleOnActive = this.handleOnActive.bind(this);
-    this.handleOnIdle = this.handleOnIdle.bind(this);
   }
 
   // ANCHOR COMPONENT DIDMOUNT
   componentDidMount() {
-    // this.GetProducts(_TYPE.GET);
     this.GetDataCache(true);
     this.scroll();
   }
@@ -54,29 +48,60 @@ class MainPage extends React.Component {
     clearInterval(checkUpdate);
   }
 
-  // ANCHOR DATA PRODUCT STATE CONTROL
+  // ANCHOR DATA PRODUCT FUNCTION
   /**
-   * **Replace** DataProduct Array with new data
-   * @param {Array} data - Array of product data
+   * Get Data Product from backend
+   *
+   * @param {Enumerator} type - _TYPE.GET to Replace Product || _TYPE.PUSH to Add Next Products to current product data
    */
-  SetDataProduct = function (data) {
-    let products = [];
-    products.push(...data);
-    this.setState({ DataProduct: products });
+  GetProducts = function (type = _TYPE.CACHE, sortVal, _page) {
+    console.log(
+      `Fetch from ${BaseUrlApi}products?_page=${this.state._page}&_limit=${LimitFetch}&_sort=${this.state._sort} : ${type}`
+    );
+    _page = this.state._page;
+    fetch(
+      `${BaseUrlApi}products?_page=${this.state._page}&_limit=${LimitFetch}&_sort=${this.state._sort}`
+    )
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          if (sortVal != this.state._sort) {
+            return;
+          }
+          if (result.length < 1) {
+            this.setState({ _endCatalogue: true, _showLoading: false });
+            return;
+          }
+          result.map((dat, idx) => {
+            dat._page = _page;
+            dat._sort = sortVal;
+          });
+
+          switch (type) {
+            case _TYPE.CACHE:
+              this.SetDataCache(result);
+              break;
+            case _TYPE.PUSH:
+              break;
+            case _TYPE.GET:
+              break;
+            default:
+              this.SetDataCache(result);
+              break;
+          }
+        },
+        (error) => {
+          console.error(error);
+          this.setState({ _onFetch: false });
+        }
+      );
   };
 
+  // ANCHOR DATA STATE CONTROL
   /**
-   * **Push** DataProduct Array with new data
-   * @param {Array} data - Array of product data
+   * Set Data to DataChace state
+   * @param {*} data - Data Product
    */
-  PushDataProduct = function (data) {
-    let products = [...this.state.DataProduct];
-    products.push(...data);
-    this.setState({ DataProduct: products }, () => {
-      console.log(this.state.DataProduct);
-    });
-  };
-
   SetDataCache = function (data) {
     let products = this.state.DataCache;
     products.push(...data);
@@ -85,77 +110,8 @@ class MainPage extends React.Component {
         this.LoadFromCache();
         this.setState({ _showLoading: false });
       }
+      this.setState({ _onFetch: false });
     });
-  };
-
-  // ANCHOR DATA PRODUCT FUNCTION
-  /**
-   * Get Data Product from backend
-   *
-   * @param {Enumerator} type - _TYPE.GET to Replace Product || _TYPE.PUSH to Add Next Products to current product data
-   */
-  GetProducts = function (type = _TYPE.GET) {
-    console.log(
-      `Fetch from ${BaseUrlApi}products?_page=${this.state._page}&_limit=${LimitFetch}&_sort=${this.state._sort} : ${type}`
-    );
-
-    if (type === _TYPE.GET) {
-      this.setState({ DataAds: [], DataCache: [], DataProduct: [] });
-    }
-    this.setState({ _onFetch: true });
-    fetch(
-      `${BaseUrlApi}products?_page=${this.state._page}&_limit=${LimitFetch}&_sort=${this.state._sort}`
-    )
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          this.setState({ _onFetch: false });
-
-          if (result.length < 1) {
-            this.setState({ _endCatalogue: true, _showLoading: false });
-            return;
-          }
-          switch (type) {
-            case _TYPE.CACHE:
-              this.SetDataCache(result);
-              break;
-            case _TYPE.PUSH:
-              this.PushDataProduct(result);
-              break;
-            case _TYPE.GET:
-            default:
-              this.SetDataProduct(result);
-              break;
-          }
-          // this.AddAds();
-          // this.setState({ _showLoading: false });
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
-  };
-
-  /**
-   * Load Next Data
-   */
-  GetNextProducts = function () {
-    if (this.state._showLoading || this.state._endCatalogue) {
-      return;
-    }
-    // console.log("Get Next Product");
-    if (this.state.DataCache.length > 0) {
-      this.LoadFromCache();
-    } else {
-      this.setState(
-        (state) => {
-          return { _page: state._page + 1 };
-        },
-        () => {
-          this.GetProducts(_TYPE.PUSH);
-        }
-      );
-    }
   };
 
   /**
@@ -175,7 +131,7 @@ class MainPage extends React.Component {
         };
       },
       () => {
-        this.GetProducts(_TYPE.CACHE);
+        this.GetProducts(_TYPE.CACHE, this.state._sort);
       }
     );
   };
@@ -185,6 +141,7 @@ class MainPage extends React.Component {
       this.GetDataCache(true);
       return;
     }
+    this.setState({ _showLoading: true });
     let _prod = this.state.DataProduct;
     let _cach = this.state.DataCache;
     _prod = _prod.concat(_cach);
@@ -200,11 +157,6 @@ class MainPage extends React.Component {
         this.GetDataCache();
       }
     );
-  };
-
-  LoadNextPage = function () {
-    this.setState({ _showLoading: true });
-    this.LoadFromCache();
   };
 
   // ANCHOR ADS GENERATOR
@@ -250,13 +202,17 @@ class MainPage extends React.Component {
    */
   onchangeSort = function (e) {
     e.preventDefault();
-    // console.log(e.target.value);
+    var sortVal = e.target.value;
     this.setState(
-      (state) => {
-        return { _sort: e.target.value };
+      {
+        _sort: sortVal,
+        _page: 0,
+        DataCache: [],
+        DataProduct: [],
+        DataAds: [],
       },
       () => {
-        this.GetProducts(_TYPE.GET);
+        this.GetDataCache(true);
       }
     );
   };
@@ -283,7 +239,6 @@ class MainPage extends React.Component {
   };
 
   checkForUpdate = function () {
-    // console.log("Check Update from Scroll");
     let bottomOfWindow =
       document.documentElement.scrollTop +
         window.innerHeight -
@@ -295,40 +250,14 @@ class MainPage extends React.Component {
         5;
 
     if (bottomOfWindow && !this.onloading) {
-      // this.GetNextProducts();
       this.LoadFromCache();
     }
   };
-
-  handleOnAction(event) {
-    // console.log("user did something", event);
-  }
-
-  handleOnActive(event) {
-    // console.log("user is active", event);
-    // console.log("time remaining", this.idleTimer.getRemainingTime());
-  }
-
-  handleOnIdle(event) {
-    // this.GetDataCache();
-    // console.log("user is idle", event);
-    // console.log("last active", this.idleTimer.getLastActiveTime());
-  }
 
   // ANCHOR RENDER ( )
   render() {
     return (
       <div className="Main">
-        <IdleTimer
-          ref={(ref) => {
-            this.idleTimer = ref;
-          }}
-          timeout={1000 * IdleTimeout}
-          onActive={this.handleOnActive}
-          onIdle={this.handleOnIdle}
-          onAction={this.handleOnAction}
-          debounce={250}
-        />
         <article className="carousel">
           <h2>ASCII FACE CATALOGUE</h2>
         </article>
