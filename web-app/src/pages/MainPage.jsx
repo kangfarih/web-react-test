@@ -24,9 +24,10 @@ class MainPage extends React.Component {
       DataProduct: [],
       DataCache: [],
       DataAds: [],
-      _page: 1,
+      _page: 0,
       _sort: "",
-      _isLoading: false,
+      _showLoading: false,
+      _onFetch: false,
       _endCatalogue: false,
       _showModal: false,
       _modalData: {},
@@ -44,7 +45,8 @@ class MainPage extends React.Component {
 
   // ANCHOR COMPONENT DIDMOUNT
   componentDidMount() {
-    this.GetProducts(_TYPE.GET);
+    // this.GetProducts(_TYPE.GET);
+    this.GetDataCache(true);
     this.scroll();
   }
 
@@ -70,13 +72,20 @@ class MainPage extends React.Component {
   PushDataProduct = function (data) {
     let products = [...this.state.DataProduct];
     products.push(...data);
-    this.setState({ DataProduct: products });
+    this.setState({ DataProduct: products }, () => {
+      console.log(this.state.DataProduct);
+    });
   };
 
   SetDataCache = function (data) {
-    let products = [];
+    let products = this.state.DataCache;
     products.push(...data);
-    this.setState({ DataCache: products });
+    this.setState({ DataCache: products }, () => {
+      if (this.state._showLoading) {
+        this.LoadFromCache();
+        this.setState({ _showLoading: false });
+      }
+    });
   };
 
   // ANCHOR DATA PRODUCT FUNCTION
@@ -86,22 +95,24 @@ class MainPage extends React.Component {
    * @param {Enumerator} type - _TYPE.GET to Replace Product || _TYPE.PUSH to Add Next Products to current product data
    */
   GetProducts = function (type = _TYPE.GET) {
-    console.log(`Fetch from ${BaseUrlApi}products?_page=${this.state._page}
-    &_limit=${LimitFetch}&_sort=${this.state._sort} : ${type}`);
-    if (type != _TYPE.CACHE) {
-      this.setState({ _isLoading: true });
-    }
+    console.log(
+      `Fetch from ${BaseUrlApi}products?_page=${this.state._page}&_limit=${LimitFetch}&_sort=${this.state._sort} : ${type}`
+    );
+
     if (type === _TYPE.GET) {
       this.setState({ DataAds: [], DataCache: [], DataProduct: [] });
     }
+    this.setState({ _onFetch: true });
     fetch(
       `${BaseUrlApi}products?_page=${this.state._page}&_limit=${LimitFetch}&_sort=${this.state._sort}`
     )
       .then((res) => res.json())
       .then(
         (result) => {
+          this.setState({ _onFetch: false });
+
           if (result.length < 1) {
-            this.setState({ _endCatalogue: true, _isLoading: false });
+            this.setState({ _endCatalogue: true, _showLoading: false });
             return;
           }
           switch (type) {
@@ -116,8 +127,8 @@ class MainPage extends React.Component {
               this.SetDataProduct(result);
               break;
           }
-          this.AddAds();
-          this.setState({ _isLoading: false });
+          // this.AddAds();
+          // this.setState({ _showLoading: false });
         },
         (error) => {
           console.error(error);
@@ -129,10 +140,10 @@ class MainPage extends React.Component {
    * Load Next Data
    */
   GetNextProducts = function () {
-    if (this.state._isLoading || this.state._endCatalogue) {
+    if (this.state._showLoading || this.state._endCatalogue) {
       return;
     }
-    console.log("Get Next Product");
+    // console.log("Get Next Product");
     if (this.state.DataCache.length > 0) {
       this.LoadFromCache();
     } else {
@@ -149,15 +160,19 @@ class MainPage extends React.Component {
 
   /**
    * Get Cache data when idle
+   * @param {} showLoader - showing loader or not
    */
-  GetDataCache = function () {
-    if (this.state.DataCache.length > 0) {
+  GetDataCache = function (showLoader = false) {
+    if (this.state.DataCache.length > 0 || this.state._endCatalogue) {
       return;
     }
-    console.log("Get Data Cache");
     this.setState(
       (state) => {
-        return { _page: state._page + 1 };
+        return {
+          _page: state._page + 1,
+          _onFetch: true,
+          _showLoading: showLoader,
+        };
       },
       () => {
         this.GetProducts(_TYPE.CACHE);
@@ -167,16 +182,29 @@ class MainPage extends React.Component {
 
   LoadFromCache = function () {
     if (this.state.DataCache.length == 0) {
+      this.GetDataCache(true);
       return;
     }
     let _prod = this.state.DataProduct;
     let _cach = this.state.DataCache;
     _prod = _prod.concat(_cach);
 
-    this.setState({
-      DataCache: [],
-      DataProduct: _prod,
-    });
+    this.setState(
+      {
+        DataCache: [],
+        DataProduct: _prod,
+        _showLoading: false,
+      },
+      () => {
+        this.AddAds();
+        this.GetDataCache();
+      }
+    );
+  };
+
+  LoadNextPage = function () {
+    this.setState({ _showLoading: true });
+    this.LoadFromCache();
   };
 
   // ANCHOR ADS GENERATOR
@@ -252,13 +280,6 @@ class MainPage extends React.Component {
     window.onscroll = () => {
       this.checkForUpdate();
     };
-    // Set Interval for checking Bottom of window
-    // checkUpdate = setInterval(() => {
-    //   if (this.state._isLoading || this.state._endCatalogue) {
-    //     return;
-    //   }
-    //   this.checkForUpdate();
-    // }, 1000);
   };
 
   checkForUpdate = function () {
@@ -274,7 +295,8 @@ class MainPage extends React.Component {
         5;
 
     if (bottomOfWindow && !this.onloading) {
-      this.GetNextProducts();
+      // this.GetNextProducts();
+      this.LoadFromCache();
     }
   };
 
@@ -288,9 +310,9 @@ class MainPage extends React.Component {
   }
 
   handleOnIdle(event) {
+    // this.GetDataCache();
     // console.log("user is idle", event);
     // console.log("last active", this.idleTimer.getLastActiveTime());
-    this.GetDataCache();
   }
 
   // ANCHOR RENDER ( )
@@ -332,7 +354,7 @@ class MainPage extends React.Component {
         <Products
           ads={this.state.DataAds}
           data={this.state.DataProduct}
-          isLoading={this.state._isLoading}
+          isLoading={this.state._showLoading}
           isEndCatalogue={this.state._endCatalogue}
           toggleModal={this.toggleModal}
         />
