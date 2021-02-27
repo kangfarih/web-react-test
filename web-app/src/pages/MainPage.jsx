@@ -43,7 +43,7 @@ class MainPage extends React.Component {
     this.GetDataCache(true);
     this.scroll();
     checkUpdate = setInterval(() => {
-      this.GetDataCache();
+      this.checkForUpdate();
     }, 1000);
   }
 
@@ -107,9 +107,6 @@ class MainPage extends React.Component {
    */
   GetDataCache = function (showLoader = false) {
     if (this.state._onFetch) {
-      if (!this.state._endCatalogue) {
-        this.setState({ _showLoading: true });
-      }
       return;
     }
     if (this.state.DataCache.length > 0 || this.state._endCatalogue) {
@@ -144,8 +141,12 @@ class MainPage extends React.Component {
   };
 
   LoadFromCache = function () {
-    if (this.state.DataCache.length == 0 && !this.state._onFetch) {
-      this.GetDataCache(true);
+    if (this.state.DataCache.length == 0) {
+      if (this.state._onFetch) {
+        this.setState({ _showLoading: true });
+      } else {
+        this.GetDataCache(true);
+      }
       return;
     }
     this.setState({ _showLoading: true }, () => {
@@ -246,8 +247,8 @@ class MainPage extends React.Component {
     };
   };
 
-  checkForUpdate = function () {
-    let bottomOfWindow =
+  isAtBottomWindow = function () {
+    return (
       document.documentElement.scrollTop +
         window.innerHeight -
         document.documentElement.offsetHeight >
@@ -255,9 +256,12 @@ class MainPage extends React.Component {
       document.documentElement.scrollTop +
         window.innerHeight -
         document.documentElement.offsetHeight <
-        5;
+        5
+    );
+  };
 
-    if (bottomOfWindow && !this.onloading) {
+  checkForUpdate = function () {
+    if (this.isAtBottomWindow()) {
       this.LoadFromCache();
     }
   };
