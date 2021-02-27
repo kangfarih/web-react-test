@@ -107,7 +107,9 @@ class MainPage extends React.Component {
    */
   GetDataCache = function (showLoader = false) {
     if (this.state._onFetch) {
-      this.setState({ _showLoading: true });
+      if (!this.state._endCatalogue) {
+        this.setState({ _showLoading: true });
+      }
       return;
     }
     if (this.state.DataCache.length > 0 || this.state._endCatalogue) {
