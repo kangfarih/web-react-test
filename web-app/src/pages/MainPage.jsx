@@ -42,6 +42,9 @@ class MainPage extends React.Component {
   componentDidMount() {
     this.GetDataCache(true);
     this.scroll();
+    checkUpdate = setInterval(() => {
+      this.GetDataCache();
+    }, 1000);
   }
 
   componentWillUnmount() {
@@ -99,26 +102,14 @@ class MainPage extends React.Component {
 
   // ANCHOR DATA STATE CONTROL
   /**
-   * Set Data to DataChace state
-   * @param {*} data - Data Product
-   */
-  SetDataCache = function (data) {
-    let products = this.state.DataCache;
-    products.push(...data);
-    this.setState({ DataCache: products }, () => {
-      if (this.state._showLoading) {
-        this.LoadFromCache();
-        this.setState({ _showLoading: false });
-      }
-      this.setState({ _onFetch: false });
-    });
-  };
-
-  /**
    * Get Cache data when idle
    * @param {} showLoader - showing loader or not
    */
   GetDataCache = function (showLoader = false) {
+    if (this.state._onFetch) {
+      this.setState({ _showLoading: true });
+      return;
+    }
     if (this.state.DataCache.length > 0 || this.state._endCatalogue) {
       return;
     }
@@ -136,27 +127,42 @@ class MainPage extends React.Component {
     );
   };
 
+  /**
+   * Set Data to DataChace state
+   * @param {*} data - Data Product
+   */
+  SetDataCache = function (data) {
+    let products = this.state.DataCache;
+    products.push(...data);
+    this.setState({ DataCache: products, _onFetch: false }, () => {
+      if (this.state._showLoading) {
+        this.LoadFromCache();
+      }
+    });
+  };
+
   LoadFromCache = function () {
-    if (this.state.DataCache.length == 0) {
+    if (this.state.DataCache.length == 0 && !this.state._onFetch) {
       this.GetDataCache(true);
       return;
     }
-    this.setState({ _showLoading: true });
-    let _prod = this.state.DataProduct;
-    let _cach = this.state.DataCache;
-    _prod = _prod.concat(_cach);
+    this.setState({ _showLoading: true }, () => {
+      let _prod = this.state.DataProduct;
+      let _cach = this.state.DataCache;
+      _prod = _prod.concat(_cach);
 
-    this.setState(
-      {
-        DataCache: [],
-        DataProduct: _prod,
-        _showLoading: false,
-      },
-      () => {
-        this.AddAds();
-        this.GetDataCache();
-      }
-    );
+      this.setState(
+        {
+          DataCache: [],
+          DataProduct: _prod,
+          _showLoading: false,
+        },
+        () => {
+          this.AddAds();
+          this.GetDataCache();
+        }
+      );
+    });
   };
 
   // ANCHOR ADS GENERATOR
