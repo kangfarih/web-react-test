@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSort } from "@fortawesome/free-solid-svg-icons";
 const _OPTION = {
-  DEFAULT: "default",
+  DEFAULT: "",
   PRICE: "price",
   SIZE: "size",
   ID: "id",

@@ -4,6 +4,7 @@ import SortOption from "../components/Sort";
 import ModalCard from "../components/ModalCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faFilter } from "@fortawesome/free-solid-svg-icons";
+
 export const BaseUrlApi = "http://localhost:3000/api/";
 export const AdsTrigger = 20;
 const _TYPE = {
@@ -25,7 +26,7 @@ class MainPage extends React.Component {
       DataCache: [],
       DataAds: [],
       _page: 0,
-      _sort: "default",
+      _sort: "",
       _showLoading: false,
       _onFetch: false,
       _endCatalogue: false,
@@ -214,6 +215,7 @@ class MainPage extends React.Component {
     var sortVal = e.target.value;
     this.setState(
       {
+        _onFetch:false,
         _sort: sortVal,
         _page: 0,
         DataCache: [],
